@@ -1,16 +1,14 @@
-> `.ddev/config.yml`
-
-```yml
 APIVersion: v1.2.0
-name: some-dir
-type: drupal8
-docroot: web
+name: ddev-presentation
+type: php
+docroot: ""
 php_version: "7.1"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
 xdebug_enabled: false
-additional_hostnames: []
+additional_hostnames: 
+  - presentation
 additional_fqdns: []
 provider: default
 
@@ -72,69 +70,3 @@ provider: default
 # information on the commands that can be extended and the tasks you can define
 # for them. Example:
 #hooks:
-# post-import-db:
-#   - exec: drush cr
-#   - exec: drush updb
-```
-
-An example of the `config.yml` file generated
-
-Notes:
-
-- ApiVersion and updating
-- Project name needs hyphens, additional hostnames property
-- nginx most common, but apache support now available, at least for *ix systems.
-- xdebug_enabled is the default when starting
-- 'provider' we don't use. Integration with hosting provider...
-
-Image customization possible, but we haven't yet.
-
-Common overrides in a bit.
-
-→
-
-# Customization: 
-## Subdomain
-
-```yml
-APIVersion: v1.2.0
-name: some-dir
-type: drupal7
-docroot: my_custom_webroot
-php_version: "5.6"
-webserver_type: nginx-fpm
-router_http_port: "80"
-router_https_port: "443"
-xdebug_enabled: false
-additional_hostnames:
-- local.some-dir
-```
-Will be available at `local.some-dir.ddev.local`, in addition to other domains
-
-Notes:
-- Some of our sites are only accessible using a subdomain.
-- Attn: customized docroot
-- Attn: customized php version
-- Attn: additional_hostnames
-  - Will be available at local.some-dir.ddev.com
-
-→
-
-# Customization (hook example): 
-## Post-start hook
-
-```yml
-# config.yaml hooks section
-hooks:
-  post-start:
-  # Clear cache on container start.
-  # Not very exciting, but it demonstrates the 
-  # principle.
-  - exec: bash -c "cd /var/www/html/public_html; drush cr"
-```
-
-Full list of hooks at <https://ddev.readthedocs.io/en/latest/users/extending-commands/#supported-command-hooks>
-
-Notes:
-- Simplified demonstration
-- Note the "bash -c" bit.
